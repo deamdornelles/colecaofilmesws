@@ -36,7 +36,7 @@ public class Banco {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
-            String textosql = "select f.nome, f.ano from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.id_filme = f.id order by f.nome";
+            String textosql = "select f.nome, f.ano, f.nome_original from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.id_filme = f.id order by f.nome";
             PreparedStatement statement = connection.prepareStatement(textosql);
             statement.setString(1, login);            
             //Statement statement = (Statement) connection.createStatement();
@@ -47,6 +47,7 @@ public class Banco {
                 Filme f = new Filme();
                 f.setNome(rs.getString("nome"));
                 f.setAno(rs.getInt("ano"));
+                f.setNomeOriginal(rs.getString("nome_original"));
                 lista.add(f);
             }
             connection.close();
