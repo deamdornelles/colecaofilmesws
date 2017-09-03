@@ -29,16 +29,18 @@ public class Banco {
     }
 
     //public String buscaFilme() {
-    public List<Filme> buscaFilme() {
+    public List<Filme> buscaFilme(String login) {
         String retorno = "";
         List<Filme> lista = new ArrayList<Filme>();
         try {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
-            String textosql = "select * from filme order by nome";
-            Statement statement = (Statement) connection.createStatement();
-            ResultSet rs = statement.executeQuery(textosql);
+            String textosql = "select f.nome, f.ano from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.id_filme = f.id order by f.nome";
+            PreparedStatement statement = connection.prepareStatement(textosql);
+            statement.setString(1, login);            
+            //Statement statement = (Statement) connection.createStatement();
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 //retorno += rs.getString("nome");
                 
