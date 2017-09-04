@@ -25,4 +25,10 @@ public class BuscaFilme {
         Banco a = new Banco();
         return a.buscaFilme(login);        
     }
+    
+    @WebMethod(operationName = "buscaTodosFilmes")
+    public List<Filme> buscaTodosFilmes(@WebParam(name = "login") String login) {
+        Banco a = new Banco();
+        return a.buscaTodosFilmes(login);        
+    }
 }

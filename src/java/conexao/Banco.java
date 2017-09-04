@@ -127,4 +127,33 @@ public class Banco {
         }
         return quantidade;
     }
+    
+    public List<Filme> buscaTodosFilmes(String login) {
+        String retorno = "";
+        List<Filme> lista = new ArrayList<Filme>();
+        try {
+            Class.forName("org.postgresql.Driver");
+            String contxt = "jdbc:postgresql://localhost:5432/postgres";
+            Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
+            String textosql = "select f.* from filme f where f.id not in (select id_filme from filme_usuario where nome_usuario = ?) order by f.nome";
+            PreparedStatement statement = connection.prepareStatement(textosql);
+            statement.setString(1, login);            
+            //Statement statement = (Statement) connection.createStatement();
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                //retorno += rs.getString("nome");
+                
+                Filme f = new Filme();
+                f.setNome(rs.getString("nome"));
+                f.setAno(rs.getInt("ano"));
+                f.setNomeOriginal(rs.getString("nome_original"));
+                lista.add(f);
+            }
+            connection.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return retorno;
+        return lista;
+    }
 }
