@@ -36,7 +36,7 @@ public class Banco {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
-            String textosql = "select f.nome, f.ano, f.nome_original from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.id_filme = f.id order by f.nome";
+            String textosql = "select f.nome, f.ano, f.nome_original from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.nome_filme = f.nome order by f.nome";
             PreparedStatement statement = connection.prepareStatement(textosql);
             statement.setString(1, login);            
             //Statement statement = (Statement) connection.createStatement();
@@ -135,7 +135,7 @@ public class Banco {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
-            String textosql = "select f.* from filme f where f.id not in (select id_filme from filme_usuario where nome_usuario = ?) order by f.nome";
+            String textosql = "select f.* from filme f where f.nome not in (select nome_filme from filme_usuario where nome_usuario = ?) order by f.nome";
             PreparedStatement statement = connection.prepareStatement(textosql);
             statement.setString(1, login);            
             //Statement statement = (Statement) connection.createStatement();
@@ -157,19 +157,21 @@ public class Banco {
         return lista;
     }
     
-    public String adicionaFilmes(List<Filme> filmes) {
+    public String adicionaFilmes(String filmes, String login) {
         String retorno = "";        
         //int quantidade = this.buscaUsuario(login);
-        //if (quantidade == 0) {
-        for (int i = 0; i < filmes.size(); i++) {
+        //if (quantidade == 0) {        
+        String filmesArray[];
+        filmesArray = filmes.split(",");
+        for (int i = 0; i < filmesArray.length; i++) {
             try {
                 Class.forName("org.postgresql.Driver");
                 String contxt = "jdbc:postgresql://localhost:5432/postgres";
                 Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
                 String textosql = "insert into filme_usuario values (?, ?)";
-                PreparedStatement statement = connection.prepareStatement(textosql);
-                statement.setString(1, filmes.get(i).getNome());
-                statement.setString(2, filmes.get(i).getNomeOriginal());
+                PreparedStatement statement = connection.prepareStatement(textosql);                
+                statement.setString(1, filmesArray[i]);
+                statement.setString(2, login);
                 statement.executeUpdate();
                 //retorno = "Conta cadastrada com sucesso!!";
                 //ResultSet rs = statement.executeQuery(textosql);
