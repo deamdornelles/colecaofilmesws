@@ -156,4 +156,35 @@ public class Banco {
         //return retorno;
         return lista;
     }
+    
+    public String adicionaFilmes(List<Filme> filmes) {
+        String retorno = "";        
+        //int quantidade = this.buscaUsuario(login);
+        //if (quantidade == 0) {
+        for (int i = 0; i < filmes.size(); i++) {
+            try {
+                Class.forName("org.postgresql.Driver");
+                String contxt = "jdbc:postgresql://localhost:5432/postgres";
+                Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
+                String textosql = "insert into filme_usuario values (?, ?)";
+                PreparedStatement statement = connection.prepareStatement(textosql);
+                statement.setString(1, filmes.get(i).getNome());
+                statement.setString(2, filmes.get(i).getNomeOriginal());
+                statement.executeUpdate();
+                //retorno = "Conta cadastrada com sucesso!!";
+                //ResultSet rs = statement.executeQuery(textosql);
+                //while (rs.next()) {
+                //    retorno += rs.getString("nome");
+                //}
+                connection.close();
+            } catch (ClassNotFoundException | SQLException ex) { 
+                retorno = "Erro, tente novamente mais tarde!!";
+                Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        //} else {
+            //retorno = "Conta já existe!!";        
+        //}
+        return retorno;
+    }
 }
