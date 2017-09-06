@@ -32,11 +32,13 @@ public class Banco {
     public List<Filme> buscaFilme(String login) {
         String retorno = "";
         List<Filme> lista = new ArrayList<Filme>();
+        //List<String> atores = new ArrayList<String>();
+        String atores = "";
         try {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
-            String textosql = "select f.nome, f.ano, f.nome_original from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.nome_filme = f.nome order by f.nome";
+            String textosql = "select f.id, f.nome, f.ano, f.nome_original from filme f, filme_usuario fu where fu.nome_usuario = ? and fu.id_filme = f.id order by f.nome";
             PreparedStatement statement = connection.prepareStatement(textosql);
             statement.setString(1, login);            
             //Statement statement = (Statement) connection.createStatement();
@@ -45,6 +47,22 @@ public class Banco {
                 //retorno += rs.getString("nome");
                 
                 Filme f = new Filme();
+                f.setId(rs.getString("id"));
+                
+                Connection connection2 = DriverManager.getConnection(contxt, "postgres", "123456");
+                String textosql2 = "select a.nome from ator a, filme_ator fa where fa.id_ator = a.id and fa.id_filme = ?";                
+                PreparedStatement statement2 = connection.prepareStatement(textosql2);
+                statement2.setString(1, f.getId());            
+                ResultSet rs2 = statement2.executeQuery();
+                while (rs2.next()) {
+                    //atores.add(rs2.getString("nome"));                    
+                    atores = atores + rs2.getString("nome");
+                    atores = atores + ", ";
+                }
+                connection2.close();
+                
+                f.setAtores(atores);                
+                atores = " ";
                 f.setNome(rs.getString("nome"));
                 f.setAno(rs.getInt("ano"));
                 f.setNomeOriginal(rs.getString("nome_original"));
@@ -135,7 +153,7 @@ public class Banco {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
-            String textosql = "select f.* from filme f where f.nome not in (select nome_filme from filme_usuario where nome_usuario = ?) order by f.nome";
+            String textosql = "select f.* from filme f where f.id not in (select id_filme from filme_usuario where nome_usuario = ?) order by f.nome";
             PreparedStatement statement = connection.prepareStatement(textosql);
             statement.setString(1, login);            
             //Statement statement = (Statement) connection.createStatement();
@@ -145,6 +163,7 @@ public class Banco {
                 
                 Filme f = new Filme();
                 f.setNome(rs.getString("nome"));
+                f.setId(rs.getString("id"));
                 f.setAno(rs.getInt("ano"));
                 f.setNomeOriginal(rs.getString("nome_original"));
                 lista.add(f);

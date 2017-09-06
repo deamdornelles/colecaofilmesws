@@ -5,6 +5,8 @@
  */
 package beans;
 
+import java.util.List;
+
 /**
  *
  * @author Deam
@@ -12,8 +14,11 @@ package beans;
 public class Filme {
     
     String nome;
+    String id;
     int ano;
     String nomeOriginal;
+    //List<String> atores;
+    String atores;
 
     public String getNome() {
         return nome;
@@ -38,9 +43,20 @@ public class Filme {
     public void setNomeOriginal(String nomeOriginal) {
         this.nomeOriginal = nomeOriginal;
     }
-    
-    
-    
-    
-    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAtores() {
+        return atores;
+    }
+
+    public void setAtores(String atores) {
+        this.atores = atores;
+    }    
 }
