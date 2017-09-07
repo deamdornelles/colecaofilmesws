@@ -31,9 +31,10 @@ public class Banco {
     //public String buscaFilme() {
     public List<Filme> buscaFilme(String login) {
         String retorno = "";
-        List<Filme> lista = new ArrayList<Filme>();
-        //List<String> atores = new ArrayList<String>();
+        List<Filme> lista = new ArrayList<Filme>();        
         String atores = "";
+        String diretores = "";
+        String generos = "";
         try {
             Class.forName("org.postgresql.Driver");
             String contxt = "jdbc:postgresql://localhost:5432/postgres";
@@ -54,8 +55,7 @@ public class Banco {
                 PreparedStatement statement2 = connection.prepareStatement(textosql2);
                 statement2.setString(1, f.getId());            
                 ResultSet rs2 = statement2.executeQuery();
-                while (rs2.next()) {
-                    //atores.add(rs2.getString("nome"));                    
+                while (rs2.next()) {                                       
                     atores = atores + rs2.getString("nome");
                     atores = atores + ", ";
                 }
@@ -63,6 +63,35 @@ public class Banco {
                 
                 f.setAtores(atores);                
                 atores = " ";
+                
+                Connection connection3 = DriverManager.getConnection(contxt, "postgres", "123456");
+                String textosql3 = "select d.nome from diretor d, filme_diretor fd, filme f where fd.id_filme = f.id and fd.id_diretor = d.id and f.id = ?";                
+                PreparedStatement statement3 = connection.prepareStatement(textosql3);
+                statement3.setString(1, f.getId());            
+                ResultSet rs3 = statement3.executeQuery();
+                while (rs3.next()) {                    
+                    diretores = diretores + rs3.getString("nome");
+                    diretores = diretores + ", ";
+                }
+                connection3.close();
+                
+                f.setDiretores(diretores);                
+                diretores = " ";
+                
+                Connection connection4 = DriverManager.getConnection(contxt, "postgres", "123456");
+                String textosql4 = "select g.nome from genero g, filme_genero fg, filme f where fg.id_filme = f.id and fg.id_genero = g.id and f.id = ?";                
+                PreparedStatement statement4 = connection.prepareStatement(textosql4);
+                statement4.setString(1, f.getId());            
+                ResultSet rs4 = statement4.executeQuery();
+                while (rs4.next()) {                    
+                    generos = generos + rs4.getString("nome");
+                    generos = generos + ", ";
+                }
+                connection4.close();
+                
+                f.setGeneros(generos);                
+                generos = " ";
+                
                 f.setNome(rs.getString("nome"));
                 f.setAno(rs.getInt("ano"));
                 f.setNomeOriginal(rs.getString("nome_original"));

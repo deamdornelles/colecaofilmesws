@@ -16,9 +16,10 @@ public class Filme {
     String nome;
     String id;
     int ano;
-    String nomeOriginal;
-    //List<String> atores;
+    String nomeOriginal;    
     String atores;
+    String diretores;
+    String generos;
 
     public String getNome() {
         return nome;
@@ -58,5 +59,24 @@ public class Filme {
 
     public void setAtores(String atores) {
         this.atores = atores;
-    }    
+    }  
+
+    public String getDiretores() {
+        return diretores;
+    }
+
+    public void setDiretores(String diretores) {
+        this.diretores = diretores;
+    }
+
+    public String getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(String generos) {
+        this.generos = generos;
+    }
+   
+    
+    
 }
