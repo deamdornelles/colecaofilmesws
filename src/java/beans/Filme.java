@@ -5,8 +5,6 @@
  */
 package beans;
 
-import java.util.List;
-
 /**
  *
  * @author Deam
@@ -20,6 +18,8 @@ public class Filme {
     String atores;
     String diretores;
     String generos;
+    byte[] imagem;
+    boolean anunciado;
 
     public String getNome() {
         return nome;
@@ -76,7 +76,20 @@ public class Filme {
     public void setGeneros(String generos) {
         this.generos = generos;
     }
-   
-    
-    
+
+    public byte[] getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(byte[] imagem) {
+        this.imagem = imagem;
+    }   
+
+    public boolean isAnunciado() {
+        return anunciado;
+    }
+
+    public void setAnunciado(boolean anunciado) {
+        this.anunciado = anunciado;
+    }   
 }
