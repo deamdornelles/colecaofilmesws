@@ -15,6 +15,7 @@ public class Anuncio {
     String descricao;
     String nomeFilme;
     String id_filme;
+    String nome_usuario;
 
     public String getId() {
         return id;
@@ -47,4 +48,13 @@ public class Anuncio {
     public void setId_filme(String id_filme) {
         this.id_filme = id_filme;
     } 
+
+    public String getNome_usuario() {
+        return nome_usuario;
+    }
+
+    public void setNome_usuario(String nome_usuario) {
+        this.nome_usuario = nome_usuario;
+    }
+    
 }

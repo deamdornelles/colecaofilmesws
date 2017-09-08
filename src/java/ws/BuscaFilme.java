@@ -74,4 +74,10 @@ public class BuscaFilme {
         Banco a = new Banco();
         return a.removeAnuncio(id_anuncio, id_filme, nome_usuario);        
     }
+    
+    @WebMethod(operationName = "buscaTodosAnuncios")
+    public List<Anuncio> buscaTodosAnuncios(@WebParam(name = "login") String login) {
+        Banco a = new Banco();
+        return a.buscaTodosAnuncios(login);        
+    } 
 }

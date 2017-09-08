@@ -409,4 +409,31 @@ public class Banco {
         
         return retorno;
     }
+    
+    public List<Anuncio> buscaTodosAnuncios(String login) {        
+        List<Anuncio> lista = new ArrayList<Anuncio>();
+        try {
+            Class.forName("org.postgresql.Driver");
+            String contxt = "jdbc:postgresql://localhost:5432/postgres";
+            Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
+            String textosql = "select fa.id, fa.descricao, f.nome, fa.id_filme, fa.nome_usuario from filme_anuncio fa, filme f where fa.id_filme = f.id and fa.nome_usuario <> ?";
+            PreparedStatement statement = connection.prepareStatement(textosql);
+            statement.setString(1, login);                        
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                //retorno += rs.getString("nome");
+                Anuncio a = new Anuncio();
+                a.setId(rs.getString("id"));
+                a.setDescricao(rs.getString("descricao"));                
+                a.setNomeFilme(rs.getString("nome"));
+                a.setId_filme(rs.getString("id_filme"));
+                a.setNome_usuario(rs.getString("nome_usuario"));
+                lista.add(a);
+            }
+            connection.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return lista;
+    }
 }
