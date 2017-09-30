@@ -70,7 +70,7 @@ public class BuscaFilme {
     } 
     
     @WebMethod(operationName = "removeAnuncio")    
-    public String removeAnuncio(@WebParam(name = "id_anuncio") String id_anuncio, @WebParam(name = "id_filme") String id_filme, @WebParam(name = "nome_usuario") String nome_usuario) {
+    public int removeAnuncio(@WebParam(name = "id_anuncio") String id_anuncio, @WebParam(name = "id_filme") String id_filme, @WebParam(name = "nome_usuario") String nome_usuario) {
         Banco a = new Banco();
         return a.removeAnuncio(id_anuncio, id_filme, nome_usuario);        
     }
