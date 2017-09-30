@@ -243,6 +243,7 @@ public class Banco {
                 //while (rs.next()) {
                 //    retorno += rs.getString("nome");
                 //}
+                retorno = (i + 1) + " Filme(s) adicionado(s)!!";
                 connection.close();
             } catch (ClassNotFoundException | SQLException ex) { 
                 retorno = "Erro, tente novamente mais tarde!!";
@@ -292,11 +293,11 @@ public class Banco {
                 PreparedStatement statement = connection.prepareStatement(textosql);                
                 statement.setString(1, id_filme);
                 statement.setString(2, login);                                
-                statement.executeUpdate();                
+                statement.executeUpdate();  
+                retorno = "Filme removido com sucesso!!";
                 connection.close();
             } catch (ClassNotFoundException | SQLException ex) { 
-                //retorno = "Erro, tente novamente mais tarde!!";
-                retorno = ex.getMessage();
+                retorno = "Erro, tente novamente mais tarde!!";                
                 Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
             }
         
@@ -380,8 +381,8 @@ public class Banco {
         return retorno;
     }
     
-    public String removeAnuncio(String id_anuncio, String id_filme, String nome_usuario) {
-        String retorno = "";        
+    public int removeAnuncio(String id_anuncio, String id_filme, String nome_usuario) {
+        int retorno = 0;        
         
             try {
                 Class.forName("org.postgresql.Driver");
@@ -403,7 +404,7 @@ public class Banco {
                 connection.close();
             } catch (ClassNotFoundException | SQLException ex) { 
                 //retorno = "Erro, tente novamente mais tarde!!";
-                retorno = ex.getMessage();
+                retorno = 1;
                 Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
             }
         
