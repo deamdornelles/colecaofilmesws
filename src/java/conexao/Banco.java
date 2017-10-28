@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,8 +133,15 @@ public class Banco {
                 Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
                 String textosql = "insert into usuario (login, senha) values (?, ?)";
                 PreparedStatement statement = connection.prepareStatement(textosql);
-                statement.setString(1, login);
-                statement.setString(2, senha);
+                
+                byte[] loginBytes = Base64.getEncoder().encode(login.getBytes());                
+                byte[] senhaBytes = Base64.getEncoder().encode(senha.getBytes());                
+                
+                /*byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
+                System.out.println("decodedBytes " + new String(decodedBytes));*/
+                
+                statement.setString(1, new String (loginBytes));
+                statement.setString(2, new String (senhaBytes));
                 statement.executeUpdate();
                 retorno = "Conta cadastrada com sucesso!!";
                 //ResultSet rs = statement.executeQuery(textosql);
@@ -159,7 +167,10 @@ public class Banco {
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
             String textosql = "select * from usuario where login = ?";
             PreparedStatement statement = connection.prepareStatement(textosql);
-            statement.setString(1, login);
+            
+            byte[] loginBytes = Base64.getEncoder().encode(login.getBytes()); 
+            
+            statement.setString(1, new String (loginBytes));
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 quantidade++;
@@ -179,8 +190,12 @@ public class Banco {
             Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
             String textosql = "select * from usuario where login = ? and senha = ?";
             PreparedStatement statement = connection.prepareStatement(textosql);
-            statement.setString(1, login);
-            statement.setString(2, senha);
+            
+            byte[] loginBytes = Base64.getEncoder().encode(login.getBytes());                
+            byte[] senhaBytes = Base64.getEncoder().encode(senha.getBytes());                
+            
+            statement.setString(1, new String (loginBytes));
+            statement.setString(2, new String (senhaBytes));
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 quantidade++;
