@@ -132,15 +132,14 @@ public class Banco {
                 String contxt = "jdbc:postgresql://localhost:5432/postgres";
                 Connection connection = DriverManager.getConnection(contxt, "postgres", "123456");
                 String textosql = "insert into usuario (login, senha) values (?, ?)";
-                PreparedStatement statement = connection.prepareStatement(textosql);
-                
-                byte[] loginBytes = Base64.getEncoder().encode(login.getBytes());                
+                PreparedStatement statement = connection.prepareStatement(textosql);                
+                                
                 byte[] senhaBytes = Base64.getEncoder().encode(senha.getBytes());                
                 
                 /*byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
                 System.out.println("decodedBytes " + new String(decodedBytes));*/
                 
-                statement.setString(1, new String (loginBytes));
+                statement.setString(1, login);
                 statement.setString(2, new String (senhaBytes));
                 statement.executeUpdate();
                 retorno = "Conta cadastrada com sucesso!!";
@@ -168,9 +167,9 @@ public class Banco {
             String textosql = "select * from usuario where login = ?";
             PreparedStatement statement = connection.prepareStatement(textosql);
             
-            byte[] loginBytes = Base64.getEncoder().encode(login.getBytes()); 
+            //byte[] loginBytes = Base64.getEncoder().encode(login.getBytes()); 
             
-            statement.setString(1, new String (loginBytes));
+            statement.setString(1, login);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 quantidade++;
@@ -191,10 +190,10 @@ public class Banco {
             String textosql = "select * from usuario where login = ? and senha = ?";
             PreparedStatement statement = connection.prepareStatement(textosql);
             
-            byte[] loginBytes = Base64.getEncoder().encode(login.getBytes());                
+            //byte[] loginBytes = Base64.getEncoder().encode(login.getBytes());                
             byte[] senhaBytes = Base64.getEncoder().encode(senha.getBytes());                
             
-            statement.setString(1, new String (loginBytes));
+            statement.setString(1, login);
             statement.setString(2, new String (senhaBytes));
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
